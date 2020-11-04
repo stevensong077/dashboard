@@ -10,20 +10,20 @@ import {
   Rate,
   Checkbox,
   Row,
-  Col
+  Col,
 } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 14
-  }
+    span: 14,
+  },
 };
 
-const normFile = e => {
+const normFile = (e) => {
   console.log("Upload event:", e);
 
   if (Array.isArray(e)) {
@@ -34,7 +34,7 @@ const normFile = e => {
 };
 
 const AddItem = () => {
-  const onFinish = values => {
+  const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
@@ -46,7 +46,7 @@ const AddItem = () => {
       initialValues={{
         ["input-number"]: 3,
         ["checkbox-group"]: ["A", "B"],
-        rate: 3.5
+        rate: 3.5,
       }}
     >
       <Form.Item label="Plain Text">
@@ -59,8 +59,8 @@ const AddItem = () => {
         rules={[
           {
             required: true,
-            message: "Please select your country!"
-          }
+            message: "Please select your country!",
+          },
         ]}
       >
         <Select placeholder="Please select a country">
@@ -76,8 +76,8 @@ const AddItem = () => {
           {
             required: true,
             message: "Please select your favourite colors!",
-            type: "array"
-          }
+            type: "array",
+          },
         ]}
       >
         <Select mode="multiple" placeholder="Please select favourite colors">
@@ -106,11 +106,10 @@ const AddItem = () => {
             40: "C",
             60: "D",
             80: "E",
-            100: "F"
+            100: "F",
           }}
         />
       </Form.Item>
-
       <Form.Item name="radio-group" label="Radio.Group">
         <Radio.Group>
           <Radio value="a">item 1</Radio>
@@ -125,8 +124,8 @@ const AddItem = () => {
         rules={[
           {
             required: true,
-            message: "Please pick an item!"
-          }
+            message: "Please pick an item!",
+          },
         ]}
       >
         <Radio.Group>
@@ -143,7 +142,7 @@ const AddItem = () => {
               <Checkbox
                 value="A"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
               >
                 A
@@ -153,7 +152,7 @@ const AddItem = () => {
               <Checkbox
                 value="B"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
                 disabled
               >
@@ -164,7 +163,7 @@ const AddItem = () => {
               <Checkbox
                 value="C"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
               >
                 C
@@ -174,7 +173,7 @@ const AddItem = () => {
               <Checkbox
                 value="D"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
               >
                 D
@@ -184,7 +183,7 @@ const AddItem = () => {
               <Checkbox
                 value="E"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
               >
                 E
@@ -194,7 +193,7 @@ const AddItem = () => {
               <Checkbox
                 value="F"
                 style={{
-                  lineHeight: "32px"
+                  lineHeight: "32px",
                 }}
               >
                 F
@@ -244,7 +243,7 @@ const AddItem = () => {
       <Form.Item
         wrapperCol={{
           span: 12,
-          offset: 6
+          offset: 6,
         }}
       >
         <Button type="primary" htmlType="submit">
@@ -255,4 +254,4 @@ const AddItem = () => {
   );
 };
 
-export default AddItem
+export default AddItem;
