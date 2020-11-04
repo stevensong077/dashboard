@@ -41,7 +41,6 @@ const Sider = () => {
           <Menu.Item key="4">
             <Link to="/addItem">Add Item</Link>
           </Menu.Item>
-          <Menu.Item key="5">Edit Items</Menu.Item>
         </SubMenu>
         <SubMenu
           key="sub4"
