@@ -116,15 +116,21 @@ const Customers = () => {
     },
   ];
   const data = [];
+  let arr = [
+    <Tag color="#87d068">active</Tag>,
+    <Tag color="#f50">archived</Tag>,
+  ];
+
   for (let i = 0; i < 46; i++) {
+    let index = Math.floor(Math.random() * arr.length);
     data.push({
       key: i,
       name: `Edward King ${i}`,
-      email: "daskhdj@gmail.com",
-      phone: "0435432330",
+      email: Math.random().toString(36).substr(2)+"@gmail.com",
+      phone: "04"+Math.floor(10000000 + Math.random() * 90000000),
       address: `London, Park Lane no. ${i}`,
       signup: "17/06/2019",
-      status: <Tag color="green">active</Tag>,
+      status: arr[index],
     });
   }
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
