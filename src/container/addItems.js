@@ -50,7 +50,7 @@ const AddItem = () => {
       }}
     >
       <Form.Item label="Plain Text">
-        <span className="ant-form-text">China</span>
+        <span>China</span>
       </Form.Item>
       <Form.Item
         name="select"
@@ -91,7 +91,7 @@ const AddItem = () => {
         <Form.Item name="input-number" noStyle>
           <InputNumber min={1} max={10} />
         </Form.Item>
-        <span className="ant-form-text"> machines</span>
+        <span> machines</span>
       </Form.Item>
 
       <Form.Item name="switch" label="Switch" valuePropName="checked">
@@ -227,13 +227,13 @@ const AddItem = () => {
           noStyle
         >
           <Upload.Dragger name="files" action="/upload.do">
-            <p className="ant-upload-drag-icon">
+            <p>
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">
+            <p>
               Click or drag file to this area to upload
             </p>
-            <p className="ant-upload-hint">
+            <p>
               Support for a single or bulk upload.
             </p>
           </Upload.Dragger>

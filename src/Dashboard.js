@@ -1,22 +1,17 @@
 import SideMenu from "./component/sideMenu";
 import { Layout, Breadcrumb, Menu } from "antd";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AddItem from "./container/addItems";
 import TimeSlot from "./container/timeSlot";
-import Customers from "./container/customers"
+import Customers from "./container/customers";
+import ItemList from "./container/itemList";
 const { Header, Content, Footer, Sider } = Layout;
 
 function Dashboard() {
   return (
     <Router>
       <Layout>
-        <Header className="header">
-          <div className="logo" />
+        <Header>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
             <Menu.Item key="1">nav 1</Menu.Item>
             <Menu.Item key="2">nav 2</Menu.Item>
@@ -28,19 +23,14 @@ function Dashboard() {
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
           </Breadcrumb>
-          <Layout
-            className="site-layout-background"
-            style={{ padding: "24px 0" }}
-          >
-            <Sider className="site-layout-background" width={256}>
-              {/* <div className="Dashboard"> */}
-                <SideMenu
-                  mode="inline"
-                  defaultSelectedKeys={["1"]}
-                  defaultOpenKeys={["sub1"]}
-                  style={{ height: "100%" }}
-                />
-              {/* </div> */}
+          <Layout style={{ padding: "24px 0" }}>
+            <Sider width={256}>
+              <SideMenu
+                mode="inline"
+                defaultSelectedKeys={["1"]}
+                defaultOpenKeys={["sub1"]}
+                style={{ height: "100%" }}
+              />
             </Sider>
             <Content style={{ padding: "0 24px", minHeight: 280 }}>
               <Switch>
@@ -52,6 +42,9 @@ function Dashboard() {
                 </Route>
                 <Route path="/customers">
                   <Customers />
+                </Route>
+                <Route path="/itemlist">
+                  <ItemList />
                 </Route>
               </Switch>
             </Content>
