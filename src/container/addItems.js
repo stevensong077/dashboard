@@ -13,6 +13,7 @@ import {
   Col,
 } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
+
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
@@ -25,11 +26,9 @@ const formItemLayout = {
 
 const normFile = (e) => {
   console.log("Upload event:", e);
-
   if (Array.isArray(e)) {
     return e;
   }
-
   return e && e.fileList;
 };
 
@@ -230,12 +229,8 @@ const AddItem = () => {
             <p>
               <InboxOutlined />
             </p>
-            <p>
-              Click or drag file to this area to upload
-            </p>
-            <p>
-              Support for a single or bulk upload.
-            </p>
+            <p>Click or drag file to this area to upload</p>
+            <p>Support for a single or bulk upload.</p>
           </Upload.Dragger>
         </Form.Item>
       </Form.Item>
