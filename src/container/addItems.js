@@ -11,6 +11,7 @@ import {
   Checkbox,
   Row,
   Col,
+  Input,
 } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 
@@ -48,8 +49,20 @@ const AddItem = () => {
         rate: 3.5,
       }}
     >
-      <Form.Item label="Plain Text">
-        <span>China</span>
+      {" "}
+      <Form.Item
+        label="SKU"
+        name="sku"
+        rules={[{ required: true, message: "Please input the SKU!" }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Item Name"
+        name="name"
+        rules={[{ required: true, message: "Please input item name!" }]}
+      >
+        <Input />
       </Form.Item>
       <Form.Item
         name="select"
@@ -67,7 +80,6 @@ const AddItem = () => {
           <Option value="usa">U.S.A</Option>
         </Select>
       </Form.Item>
-
       <Form.Item
         name="select-multiple"
         label="Select[multiple]"
@@ -85,18 +97,15 @@ const AddItem = () => {
           <Option value="blue">Blue</Option>
         </Select>
       </Form.Item>
-
       <Form.Item label="InputNumber">
         <Form.Item name="input-number" noStyle>
           <InputNumber min={1} max={10} />
         </Form.Item>
         <span> machines</span>
       </Form.Item>
-
       <Form.Item name="switch" label="Switch" valuePropName="checked">
         <Switch />
       </Form.Item>
-
       <Form.Item name="slider" label="Slider">
         <Slider
           marks={{
@@ -116,7 +125,6 @@ const AddItem = () => {
           <Radio value="c">item 3</Radio>
         </Radio.Group>
       </Form.Item>
-
       <Form.Item
         name="radio-button"
         label="Radio.Button"
@@ -133,7 +141,6 @@ const AddItem = () => {
           <Radio.Button value="c">item 3</Radio.Button>
         </Radio.Group>
       </Form.Item>
-
       <Form.Item name="checkbox-group" label="Checkbox.Group">
         <Checkbox.Group>
           <Row>
@@ -201,11 +208,9 @@ const AddItem = () => {
           </Row>
         </Checkbox.Group>
       </Form.Item>
-
       <Form.Item name="rate" label="Rate">
         <Rate />
       </Form.Item>
-
       <Form.Item
         name="upload"
         label="Upload"
@@ -217,7 +222,6 @@ const AddItem = () => {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
-
       <Form.Item label="Dragger">
         <Form.Item
           name="dragger"
@@ -234,7 +238,6 @@ const AddItem = () => {
           </Upload.Dragger>
         </Form.Item>
       </Form.Item>
-
       <Form.Item
         wrapperCol={{
           span: 12,

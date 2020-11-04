@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Table, Tag, Space,Input, Button } from "antd";
-import Highlighter from 'react-highlight-words';
+import { Table, Tag, Space, Input, Button } from "antd";
+import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 
 const Customers = () => {
-
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
@@ -84,14 +83,12 @@ const Customers = () => {
     {
       title: "SKU",
       dataIndex: "sku",
-      ...getColumnSearchProps('sku'),
-
+      ...getColumnSearchProps("sku"),
     },
     {
       title: "Item Name",
       dataIndex: "name",
-      ...getColumnSearchProps('name'),
-
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Price($)",
@@ -135,16 +132,27 @@ const Customers = () => {
 
   const data = [];
   for (let i = 0; i < 46; i++) {
-    const discount = (Math.random()*10).toFixed(2)
+    const discount = (Math.random() * 10).toFixed(2);
+    let categoriesArr = [
+      <Tag color="geekblue">KOREAN-TOFU</Tag>,
+      <Tag color="geekblue">Chinese-TOFU</Tag>,
+      <Tag color="geekblue">Japanese-TOFU</Tag>,
+    ];
+    let indexCate = Math.floor(Math.random() * categoriesArr.length);
+    let statusArr = [
+      <Tag color="#87d068">active</Tag>,
+      <Tag color="#f50">archived</Tag>,
+    ];
+    let indexSta = Math.floor(Math.random() * statusArr.length);
     data.push({
       key: i,
-      sku: 9826387462834,
+      sku: Math.floor(100000000000 + Math.random() * 900000000000),
       name: `Ourhome Soft Tofu340g ${i}`,
-      price: (discount*1.5).toFixed(2) ,
+      price: (discount * 1.5).toFixed(2),
       discount: discount,
-      stock: parseInt(Math.random()*10000),
-      categories: <Tag color="green">KOREAN-TOFU</Tag>,
-      status: <Tag color="#87d068">active</Tag>,
+      stock: parseInt(Math.random() * 10000),
+      categories: categoriesArr[indexCate],
+      status: statusArr[indexSta],
     });
   }
 
@@ -156,7 +164,7 @@ const Customers = () => {
 
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText("")
+    setSearchText("");
   };
 
   return <Table columns={columns} dataSource={data} />;
