@@ -148,7 +148,7 @@ const Customers = () => {
       <Tag color="#f50">archived</Tag>,
     ];
     let indexSta = Math.floor(Math.random() * statusArr.length);
-    let comArr = ["","in large demand",""];
+    let comArr = ["", "in large demand", ""];
     let indexCom = Math.floor(Math.random() * comArr.length);
     data.push({
       key: i,
@@ -159,7 +159,7 @@ const Customers = () => {
       stock: parseInt(Math.random() * 10000),
       categories: categoriesArr[indexCate],
       status: statusArr[indexSta],
-      comment: comArr[indexCom]
+      comment: comArr[indexCom],
     });
   }
 

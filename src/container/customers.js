@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Table, Tag, Space, Input, Button } from "antd";
-import Highlighter from 'react-highlight-words';
+import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
-
-
 
 const Customers = () => {
   let searchInput = React.createRef();
@@ -126,8 +124,8 @@ const Customers = () => {
     data.push({
       key: i,
       name: `Edward King ${i}`,
-      email: Math.random().toString(36).substr(2)+"@gmail.com",
-      phone: "04"+Math.floor(10000000 + Math.random() * 90000000),
+      email: Math.random().toString(36).substr(2) + "@gmail.com",
+      phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
       address: `London, Park Lane no. ${i}`,
       signup: "17/06/2019",
       status: arr[index],
