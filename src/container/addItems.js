@@ -9,7 +9,7 @@ import {
   Tag,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-const { TextArea } = Input
+const { TextArea } = Input;
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
@@ -105,7 +105,6 @@ const AddItem = () => {
           </Radio>
         </Radio.Group>
       </Form.Item>
- 
       <Form.Item
         name="upload"
         label="Upload Image"
@@ -116,11 +115,8 @@ const AddItem = () => {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
-      <Form.Item
-        label="Comment"
-        name="comment"
-      >
-      <TextArea showCount maxLength={100} />
+      <Form.Item label="Comment" name="comment">
+        <TextArea showCount maxLength={100} />
       </Form.Item>
       <Form.Item
         wrapperCol={{
