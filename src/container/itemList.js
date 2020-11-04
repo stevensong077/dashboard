@@ -3,21 +3,32 @@ import { Table, Tag, Space } from "antd";
 
 const columns = [
   {
-    title: "Name",
+    title: "Item Image",
+    dataIndex: "image",
+  },
+  {
+    title: "SKU",
+    dataIndex: "sku",
+  },
+  {
+    title: "Item Name",
     dataIndex: "name",
   },
   {
-    title: "Email",
-    dataIndex: "email",
-  },
-  { title: "Phone", dataIndex: "phone" },
-  {
-    title: "Address",
-    dataIndex: "address",
+    title: "Price",
+    dataIndex: "price",
   },
   {
-    title: "Signup Date",
-    dataIndex: "signup",
+    title: "Discount Price",
+    dataIndex: "discount",
+  },
+  {
+    title: "Stock",
+    dataIndex: "stock",
+  },
+  {
+    title: "Categories",
+    dataIndex: "categories",
   },
   {
     title: "Status",
@@ -28,7 +39,7 @@ const columns = [
     dataIndex: "opeartion",
     render: () => (
       <Space size="middle">
-        <a>Delete</a>
+        <a>Edit</a>
       </Space>
     ),
   },
@@ -38,18 +49,19 @@ const data = [];
 for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
-    name: `Edward King ${i}`,
-    email: "daskhdj@gmail.com",
-    phone: "0435432330",
-    address: `London, Park Lane no. ${i}`,
-    signup: "17/06/2019",
-    status: <Tag color="green">active</Tag>,
+    sku: 9826387462834,
+    name: `Ourhome Soft Tofu340g ${i}`,
+    price: "$3.42",
+    discount: "$2.51",
+    stock: "245",
+    categories: <Tag color="green">KOREAN-TOFU</Tag>,
+    status: <Tag color="#87d068">active</Tag>,
   });
 }
 
 const Customers = () => {
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
   const onSelectChange = (selectedRowKeys) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
