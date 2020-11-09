@@ -1,47 +1,4 @@
-import { Tag, Space } from "antd";
-const arr = [
-  <Tag color="#87d068">active</Tag>,
-  <Tag color="#f50">archived</Tag>,
-];
-
 const defaultState = {
-  columns: [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-    },
-    {
-      title: "Signup Date",
-      dataIndex: "signup",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
-      title: "Operation",
-      dataIndex: "opeartion",
-      render: () => (
-        <Space size="middle">
-          <a>Edit</a>
-          <a>remove</a>
-        </Space>
-      ),
-    },
-  ],
-
   data: [
     {
       key: 1,
@@ -50,7 +7,7 @@ const defaultState = {
       phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: arr[0],
+      status: "active",
     },
     {
       key: 2,
@@ -59,9 +16,44 @@ const defaultState = {
       phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: arr[1],
+      status: "achived",
+    },
+    {
+      key: 3,
+      name: "Edward King",
+      email: Math.random().toString(36).substr(2) + "@gmail.com",
+      phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
+      address: "London, Park Lane no.1",
+      signup: "17/06/2019",
+      status: "active",
+    },
+    {
+      key: 4,
+      name: "Edward King",
+      email: Math.random().toString(36).substr(2) + "@gmail.com",
+      phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
+      address: "London, Park Lane no.1",
+      signup: "17/06/2019",
+      status: "active",
     },
   ],
 };
 
-export default () => defaultState;
+// export default (state = defaultState, type, ...action) => {
+//     switch(type){
+//         case actions.REMOVE_CUMSTOMER:
+//         return{
+//             ...state,
+//         }
+//     }
+// };
+
+export default (state = defaultState, action) => {
+  if ((action.type = "REMOVE_CUSTOMER")) {
+    const newState = JSON.parse(JSON.stringify(state));
+    const newData = newState.data.filter((item) => item.phone !== action.index);
+    newState.data = newData;
+    return newState;
+  }
+  return state;
+};

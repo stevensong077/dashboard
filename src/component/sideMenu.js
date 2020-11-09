@@ -11,7 +11,6 @@ import {
 } from "@ant-design/icons";
 const { SubMenu } = Menu;
 const Sider = () => {
-
   const theme = "dark";
   const [current, setCurrent] = useState("1");
   const handleClick = (e) => {
@@ -24,7 +23,7 @@ const Sider = () => {
       <Menu
         theme={theme}
         onClick={handleClick}
-        style={{minHeight : 900}}
+        style={{ minHeight: 900 }}
         defaultOpenKeys={["sub1", "sub2", "sub4", "sub5", "sub6", "sub7"]}
         selectedKeys={[current]}
         mode="inline"
@@ -32,14 +31,14 @@ const Sider = () => {
         <SubMenu
           key="sub1"
           icon={<UserOutlined />}
-          title={<Link to="/customers">Customers</Link>}
+          title={<Link to="/Customers">Customers</Link>}
         ></SubMenu>
         <SubMenu key="sub2" icon={<ShoppingOutlined />} title="Goods">
           <Menu.Item key="3">
-            <Link to="/itemList">Item List</Link>
+            <Link to="/ItemList">Item List</Link>
           </Menu.Item>
           <Menu.Item key="4">
-            <Link to="/addItem">Add Item</Link>
+            <Link to="/AddItem">Add Item</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu
@@ -55,7 +54,7 @@ const Sider = () => {
         <SubMenu key="sub6" icon={<CarOutlined />} title="Delivery">
           <Menu.Item key="6">
             {" "}
-            <Link to="/timeSlot">Delivery Solt</Link>
+            <Link to="/TimeSlot">Delivery Solt</Link>
           </Menu.Item>
           <Menu.Item key="7">Delivery Fee</Menu.Item>
         </SubMenu>

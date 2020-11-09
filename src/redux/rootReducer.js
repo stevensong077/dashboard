@@ -1,5 +1,5 @@
-import Customers from "./customers/reducer"
+import Customers from "./customers/reducer";
 
 export default {
-    Customers
-}
+  Customers,
+};
