@@ -36,6 +36,7 @@ const defaultState = {
       render: () => (
         <Space size="middle">
           <a>Edit</a>
+          <a>remove</a>
         </Space>
       ),
     },
@@ -53,7 +54,7 @@ const defaultState = {
     },
     {
       key: 2,
-      name: "Edward Steve",
+      name: "Joy Steve",
       email: Math.random().toString(36).substr(2) + "@gmail.com",
       phone: "04" + Math.floor(10000000 + Math.random() * 90000000),
       address: "London, Park Lane no.1",
