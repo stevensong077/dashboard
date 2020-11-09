@@ -38,6 +38,7 @@ const AddItem = () => {
   };
   return (
     <Form
+      style={{paddingTop: 50}}
       name="validate_other"
       {...formItemLayout}
       onFinish={onFinish}
