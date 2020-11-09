@@ -1,10 +1,11 @@
 import SideMenu from "./component/sideMenu";
-import { Layout, Breadcrumb } from "antd";
+import { Layout } from "antd";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AddItem from "./container/addItems";
-import TimeSlot from "./container/timeSlot";
-import Customers from "./container/customers";
-import ItemList from "./container/itemList";
+import AddItem from "./container/AddItems";
+import TimeSlot from "./container/TimeSlot";
+import Customers from "./container/Customers";
+import ItemList from "./container/ItemList";
+import Header from './component/header';
 const { Content, Footer, Sider } = Layout;
 
 function Dashboard() {
@@ -20,10 +21,7 @@ function Dashboard() {
           />
         </Sider>
         <Content style={{ padding: "0 24px", minHeight: 320 }}>
-          <Breadcrumb style={{ margin: "24px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-          </Breadcrumb>
+            <Header/>
           <Switch>
             <Route path="/addItem">
               <AddItem />
