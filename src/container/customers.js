@@ -4,11 +4,7 @@ import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
 // const { Text } = Typography;
 const Customers = (props) => {
-  const { originData, removeCustomer } = props;
-  const handldRemove = (phone) => {
-    removeCustomer(phone);
-  };
-
+  const { originData, removeCustomer, saveChanges } = props;
   const EditableCell = ({ editing, dataIndex, title, children }) => {
     return (
       <td>
@@ -52,24 +48,17 @@ const Customers = (props) => {
       setEditingKey("");
     };
 
-    const save = async (key) => {
-      try {
-        const row = await form.validateFields();
-        const newData = [...data];
-        const index = newData.findIndex((item) => key === item.key);
+    const Remove = (key) => {
+      removeCustomer(key);
+    };
 
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, { ...item, ...row });
-          setData(newData);
-          setEditingKey("");
-        } else {
-          newData.push(row);
-          setData(newData);
-          setEditingKey("");
-        }
-      } catch (errInfo) {
-        console.log("Validate Failed:", errInfo);
+    const save = async (key) => {
+      try{
+      const row = await form.validateFields();
+      saveChanges(key,row);
+      setEditingKey("");}
+      catch(err){
+        console.log("Validate Failed: ",err);
       }
     };
 
@@ -141,7 +130,7 @@ const Customers = (props) => {
               </a>
               <Popconfirm
                 title="Sure to remove this customer?"
-                onConfirm={() => handldRemove(record.phone)}
+                onConfirm={() => Remove(record.key)}
                 okText="Yes"
                 cancelText="No"
               >
@@ -190,7 +179,7 @@ const Customers = (props) => {
   return <EditableTable />;
 };
 
-const { removeCustomer } = actions;
+const { removeCustomer, saveChanges } = actions;
 
 // export default Customers;
 export default connect(
@@ -200,6 +189,6 @@ export default connect(
       originData: data,
     };
   },
-  { removeCustomer },
+  { removeCustomer, saveChanges },
   null
 )(Customers);
