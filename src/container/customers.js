@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from "react";
 import Filter from "../component/Filter";
 import SearchBox from "../component/SearchBox";
-
-import { Table, Space, Tag, Input, Form, Popconfirm} from "antd";
+import { Table, Space, Tag, Input, Form, Popconfirm } from "antd";
 import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
 
@@ -19,6 +18,7 @@ const Customers = (props) => {
     filterCustomers(value);
   };
   const searchHandler = (e) => {
+    console.log(e.target.value);
     searchCustomer(e.target.value);
   };
 
@@ -206,6 +206,7 @@ const {
   filterCustomers,
   searchCustomer,
 } = actions;
+
 export default connect(
   (state) => {
     const { data } = state.Customers;

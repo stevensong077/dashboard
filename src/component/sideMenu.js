@@ -9,6 +9,7 @@ import {
   AccountBookOutlined,
   BarsOutlined,
 } from "@ant-design/icons";
+
 const { SubMenu } = Menu;
 const Sider = () => {
   const theme = "dark";
@@ -28,10 +29,9 @@ const Sider = () => {
         selectedKeys={[current]}
         mode="inline"
       >
-        <Menu.Item
-          key="sub1"
-          icon={<UserOutlined />}
-        ><Link to="/Customers">Customers</Link></Menu.Item>
+        <Menu.Item key="sub1" icon={<UserOutlined />}>
+          <Link to="/Customers">Customers</Link>
+        </Menu.Item>
         <SubMenu key="sub2" icon={<ShoppingOutlined />} title="Goods">
           <Menu.Item key="3">
             <Link to="/ItemList">Item List</Link>
