@@ -1,10 +1,6 @@
-const generatePhone = () => {
-  return "04" + Math.floor(10000000 + Math.random() * 90000000);
-};
-
-const generateEmail = () => {
-  return Math.random().toString(36).substr(2) + "@gmail.com";
-};
+import actions from "./actions";
+import deepCopy from "../../utils/deepCopy";
+import getCustomers from "../../apis/customers";
 const defaultState = {
   data: [
     {
@@ -23,11 +19,11 @@ const defaultState = {
       phone: "0491092826",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "achived",
+      status: "archived",
     },
     {
       key: 3,
-      name: "Edward King",
+      name: "Fill Yun",
       email: "kk7o1uizqlm@gmail.com",
       phone: "0421781332",
       address: "London, Park Lane no.1",
@@ -36,44 +32,91 @@ const defaultState = {
     },
     {
       key: 4,
-      name: "Edward King",
+      name: "Smith Holy",
       email: "417tldi4ezp@gmail.com",
       phone: "0441094612",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
       status: "active",
     },
+    {
+      key: 5,
+      name: "Qiyana Wang",
+      email: "ff34wewewfezp@gmail.com",
+      phone: "0441873434",
+      address: "London, Park Lane no.1",
+      signup: "17/06/2019",
+      status: "active",
+    },
+    {
+      key: 6,
+      name: "Lee Sin",
+      email: "23dwewfezp@gmail.com",
+      phone: "0441873434",
+      address: "London, Park Lane no.1",
+      signup: "23/06/2017",
+      status: "archived",
+    },
   ],
 };
 
-// export default (state = defaultState, {type, ...actions}) => {
-//     switch(type){
-//         case actions.REMOVE_CUMSTOMER:
-//         return{
-//             ...state.data.filter((item)=>item.key !== actions.index)
-//         }
-//         default: return state;
-//     }
-// };
+function getNewData(prevDataArr, key, row) {
+  // const newState = deepCopy(prevDataArr); // JSON.parse(JSON.stringify(state))
+  const newArr = prevDataArr.forEach((item) => {
+    if (item.key === key) {
+      return { ...item, ...row };
+    }
+  });
+  return newArr;
+}
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case "REMOVE_CUSTOMER": {
-      const newState = JSON.parse(JSON.stringify(state));
+    case actions.REMOVE_CUSTOMER: {
+      const newState = { ...state };
       const newData = newState.data.filter((item) => item.key !== action.key);
       newState.data = newData;
       return newState;
     }
-    case "SAVE_CHANGES": {
-      const newState = JSON.parse(JSON.stringify(state));
+    case actions.SAVE_CHANGES: {
+      const newState = deepCopy(state); // JSON.parse(JSON.stringify(state))
       const index = newState.data.findIndex((item) => action.key === item.key);
+      const arr = [...newState.data];
       if (index > -1) {
-        const item = newState.data[index];
-        newState.data.splice(index, 1, { ...item, ...action.row });
+        const item = arr[index];
+        arr.splice(index, 1, { ...item, ...action.row });
+        newState.data = [...arr];
+      } else {
+        newState.data = [...arr, action.row];
+      }
+      return newState;
+      // return {
+      //   ...state,
+      //   data: getNewData(state.data, action.key, action.row)
+      // }
+    }
+    case actions.FILTER_CUSTOMERS: {
+      const newState = deepCopy(state);
+      const originData = getCustomers().data
+      if (action.value === "active") {
+        const newData = originData.filter(
+          (item) => item.status === "active"
+        );
+        newState.data = newData;
+        return newState;
+      } else if (action.value === "archived") {
+        const newData = originData.filter(
+          (item) => item.status === "archived"
+        );
+        newState.data = newData;
         return newState;
       } else {
-        newState.data.push(action.row);
+        newState.data = originData
+        return newState;
       }
+    }
+    case actions.SEARCH_CUSTOMER: {
+      const newState = deepCopy(state);
     }
     default:
       return state;

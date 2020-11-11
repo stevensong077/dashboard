@@ -3,7 +3,7 @@ import { Table, Tag, Space, Input, Button } from "antd";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 
-const Customers = () => {
+const ItemList = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
@@ -177,4 +177,4 @@ const Customers = () => {
   return <Table columns={columns} dataSource={data} />;
 };
 
-export default Customers;
+export default ItemList;

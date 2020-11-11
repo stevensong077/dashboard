@@ -1,10 +1,27 @@
-import React, { useState } from "react";
-import { Table, Space, Tag, Input, Form, Popconfirm, Typography } from "antd";
+import React, { Fragment, useState } from "react";
+import Filter from "../component/Filter";
+import SearchBox from "../component/SearchBox";
+
+import { Table, Space, Tag, Input, Form, Popconfirm} from "antd";
 import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
-// const { Text } = Typography;
+
 const Customers = (props) => {
-  const { originData, removeCustomer, saveChanges } = props;
+  const {
+    originData,
+    removeCustomer,
+    saveChanges,
+    filterCustomers,
+    searchCustomer,
+  } = props;
+
+  const selectHandler = (value) => {
+    filterCustomers(value);
+  };
+  const searchHandler = (e) => {
+    searchCustomer(e.target.value);
+  };
+
   const EditableCell = ({ editing, dataIndex, title, children }) => {
     return (
       <td>
@@ -30,38 +47,34 @@ const Customers = (props) => {
     );
   };
 
-  const EditableTable = () => {
+  const EditableTable = (props) => {
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState("");
-
     const isEditing = (record) => record.key === editingKey;
-
-    const edit = (record) => {
+    const editHandler = (record) => {
       form.setFieldsValue({
         ...record,
       });
       setEditingKey(record.key);
     };
 
-    const cancel = () => {
+    const cancelHandler = () => {
       setEditingKey("");
     };
 
-    const Remove = (key) => {
+    const RemoveHandler = (key) => {
       removeCustomer(key);
     };
 
-    const save = async (key) => {
-      try{
-      const row = await form.validateFields();
-      saveChanges(key,row);
-      setEditingKey("");}
-      catch(err){
-        console.log("Validate Failed: ",err);
+    const saveHander = async (key) => {
+      try {
+        const row = await form.validateFields();
+        saveChanges(key, row);
+        setEditingKey("");
+      } catch (err) {
+        console.log("Validate Failed: ", err);
       }
     };
-
     const columns = [
       {
         title: "Name",
@@ -108,7 +121,7 @@ const Customers = (props) => {
             <Space size="middle">
               <Popconfirm
                 title="Your changes will be saved."
-                onConfirm={() => save(record.key)}
+                onConfirm={() => saveHander(record.key)}
                 okText="Yes"
                 cancelText="No"
               >
@@ -116,7 +129,7 @@ const Customers = (props) => {
               </Popconfirm>
               <Popconfirm
                 title="Your changes won't be saved."
-                onConfirm={cancel}
+                onConfirm={cancelHandler}
                 okText="Yes"
                 cancelText="No"
               >
@@ -125,16 +138,19 @@ const Customers = (props) => {
             </Space>
           ) : (
             <Space size="middle">
-              <a disabled={editingKey !== ""} onClick={() => edit(record)}>
+              <a
+                disabled={editingKey !== ""}
+                onClick={() => editHandler(record)}
+              >
                 Edit
               </a>
               <Popconfirm
                 title="Sure to remove this customer?"
-                onConfirm={() => Remove(record.key)}
+                onConfirm={() => RemoveHandler(record.key)}
                 okText="Yes"
                 cancelText="No"
               >
-                <a>Remove</a>
+                <a disabled={editingKey !== ""}>Remove</a>
               </Popconfirm>
             </Space>
           );
@@ -145,7 +161,6 @@ const Customers = (props) => {
       if (!col.editable) {
         return col;
       }
-
       return {
         ...col,
         onCell: (record) => ({
@@ -166,22 +181,31 @@ const Customers = (props) => {
             },
           }}
           bordered
-          dataSource={data}
+          dataSource={props.initialData}
           columns={mergedColumns}
           pagination={{
-            onChange: cancel,
+            onChange: cancelHandler,
           }}
         />
       </Form>
     );
   };
 
-  return <EditableTable />;
+  return (
+    <Fragment>
+      <Filter select={selectHandler} />
+      <SearchBox search={searchHandler} />
+      <EditableTable initialData={originData} />
+    </Fragment>
+  );
 };
 
-const { removeCustomer, saveChanges } = actions;
-
-// export default Customers;
+const {
+  removeCustomer,
+  saveChanges,
+  filterCustomers,
+  searchCustomer,
+} = actions;
 export default connect(
   (state) => {
     const { data } = state.Customers;
@@ -189,6 +213,6 @@ export default connect(
       originData: data,
     };
   },
-  { removeCustomer, saveChanges },
+  { removeCustomer, saveChanges, filterCustomers, searchCustomer },
   null
 )(Customers);
