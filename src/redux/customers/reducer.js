@@ -1,5 +1,5 @@
 import actions from "./actions";
-import {deepCopy,find} from "../../utils/utils";
+import { deepCopy, find } from "../../utils/utils";
 import getCustomers from "../../apis/customers";
 const defaultState = {
   data: [
@@ -58,7 +58,7 @@ const defaultState = {
       status: "archived",
     },
   ],
-  inputValue:""
+  inputValue: "",
 };
 
 function getNewData(prevDataArr, key, row) {
@@ -117,14 +117,12 @@ export default (state = defaultState, action) => {
       const originData = getCustomers().data;
       const newData = originData.filter(
         (item) =>
-        find(item.name,action.value)||find(item.email,action.value)||find(item.phone,action.value)
-          // item.name.toLowerCase().indexOf(action.value.toLowerCase()) > -1 ||
-          // item.email.toLowerCase().indexOf(action.value.toLowerCase()) > -1 ||
-          // item.phone.toLowerCase().indexOf(action.value.toLowerCase()) > -1
+          find(item.name, action.value) ||
+          find(item.email, action.value) ||
+          find(item.phone, action.value)
       );
       newState.data = newData;
       return newState;
-
     }
     default:
       return state;

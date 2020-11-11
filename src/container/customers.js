@@ -15,7 +15,7 @@ const Customers = (props) => {
     searchCustomer,
   } = props;
 
-  const [input,setInput] = useState("")
+  // const [input,setInput] = useState("")
 
   const selectHandler = (value) => {
     filterCustomers(value);
@@ -224,7 +224,7 @@ export default connect(
   (state) => {
     const { data } = state.Customers;
     return {
-      originData: data,
+      originData: data  // .filter((item)=> item.status === active),
     };
   },
   { removeCustomer, saveChanges, filterCustomers, searchCustomer },
