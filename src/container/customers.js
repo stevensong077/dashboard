@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from "react";
 import Filter from "../component/Filter";
 import SearchBox from "../component/SearchBox";
-import { Table, Space, Tag, Input, Form, Popconfirm } from "antd";
+import { Table, Space, Tag, Input, Form, Popconfirm, Button } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
 
@@ -13,6 +14,8 @@ const Customers = (props) => {
     filterCustomers,
     searchCustomer,
   } = props;
+
+  // const [input,setInput] = useState("")
 
   const selectHandler = (value) => {
     filterCustomers(value);
@@ -195,6 +198,16 @@ const Customers = (props) => {
     <Fragment>
       <Filter select={selectHandler} />
       <SearchBox search={searchHandler} />
+      <Button onClick={(e)=>console.log(e.target)}> Submit</ Button>
+      <Button
+      style={{float: "right" ,borderRight: 50}}
+        type="primary"
+        shape="round"
+        icon={<ReloadOutlined />}
+        onClick={() => window.location.reload()}
+      >
+        Reload
+      </Button>
       <EditableTable initialData={originData} />
     </Fragment>
   );
@@ -211,7 +224,7 @@ export default connect(
   (state) => {
     const { data } = state.Customers;
     return {
-      originData: data,
+      originData: data  // .filter((item)=> item.status === active),
     };
   },
   { removeCustomer, saveChanges, filterCustomers, searchCustomer },
