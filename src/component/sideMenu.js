@@ -28,11 +28,10 @@ const Sider = () => {
         selectedKeys={[current]}
         mode="inline"
       >
-        <SubMenu
+        <Menu.Item
           key="sub1"
           icon={<UserOutlined />}
-          title={<Link to="/Customers">Customers</Link>}
-        ></SubMenu>
+        ><Link to="/Customers">Customers</Link></Menu.Item>
         <SubMenu key="sub2" icon={<ShoppingOutlined />} title="Goods">
           <Menu.Item key="3">
             <Link to="/ItemList">Item List</Link>
