@@ -1,5 +1,4 @@
 import { PageHeader, Button, Breadcrumb } from "antd";
-import { ReloadOutlined } from "@ant-design/icons";
 import { Fragment } from "react";
 
 const Header = () => {
@@ -13,16 +12,7 @@ const Header = () => {
         onBack={() => window.history.back()}
         style={{ marginBottom: 30 }}
         title="Title"
-        extra={
-          <Button
-            type="primary"
-            shape="round"
-            icon={<ReloadOutlined />}
-            onClick={() => window.location.reload()}
-          >
-            Reload
-          </Button>
-        }
+
       ></PageHeader>
     </Fragment>
   );
