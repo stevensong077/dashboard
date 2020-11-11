@@ -3,6 +3,7 @@ import { Typography, Input } from "antd";
 const { Text } = Typography;
 
 const SearchBox = (props) => {
+
   return (
     <Fragment>
       <Text style={{ marginLeft: 80, marginRight: 10 }}>Search</Text>

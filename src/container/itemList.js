@@ -164,8 +164,9 @@ const ItemList = () => {
   }
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
+    // console.log(confirm()); 
+    console.log(...selectedKeys);
+    setSearchText(...selectedKeys);
     setSearchedColumn(dataIndex);
   };
 
