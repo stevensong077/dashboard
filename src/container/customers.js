@@ -126,7 +126,7 @@ const Customers = props => {
                 okText="Yes"
                 cancelText="No"
               >
-                <p>Save</p>
+                <a>Save</a>
               </Popconfirm>
               <Popconfirm
                 title="Your changes won't be saved."
@@ -134,24 +134,24 @@ const Customers = props => {
                 okText="Yes"
                 cancelText="No"
               >
-                <p>Cancel</p>
+                <a>Cancel</a>
               </Popconfirm>
             </Space>
           ) : (
             <Space size="middle">
-              <p
+              <a
                 disabled={editingKey !== ""}
                 onClick={() => editHandler(record)}
               >
                 Edit
-              </p>
+              </a>
               <Popconfirm
                 title="Sure to remove this customer?"
                 onConfirm={() => RemoveHandler(record.key)}
                 okText="Yes"
                 cancelText="No"
               >
-                <p disabled={editingKey !== ""}>Remove</p>
+                <a disabled={editingKey !== ""}>Remove</a>
               </Popconfirm>
             </Space>
           );
