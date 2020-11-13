@@ -4,24 +4,26 @@ const actions = {
   FILTER_CUSTOMERS: "FILTER_CUSTOMERS",
   SEARCH_CUSTOMER: "SEARCH_CUSTOMER",
 
-  removeCustomer: (key) => ({
+  removeCustomer: key => ({
     type: actions.REMOVE_CUSTOMER,
-    key,
+    key
   }),
 
   saveChanges: (key, row) => ({
     type: actions.SAVE_CHANGES,
     key,
-    row,
+    row
   }),
-  filterCustomers: (value) => ({
+
+  filterCustomers: value => ({
     type: actions.FILTER_CUSTOMERS,
-    value,
+    value
   }),
-  searchCustomer: (value) => ({
+
+  searchCustomer: value => ({
     type: actions.SEARCH_CUSTOMER,
-    value,
-  }),
+    value
+  })
 };
 
 export default actions;

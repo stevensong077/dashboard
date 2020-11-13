@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Form,
   Select,
@@ -7,21 +7,22 @@ import {
   Button,
   Upload,
   Input,
-  Tag,
+  Tag
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+
 const { TextArea } = Input;
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    span: 6,
+    span: 6
   },
   wrapperCol: {
-    span: 14,
-  },
+    span: 14
+  }
 };
 
-const normFile = (e) => {
+const normFile = e => {
   console.log("Upload event:", e);
   if (Array.isArray(e)) {
     return e;
@@ -30,24 +31,20 @@ const normFile = (e) => {
 };
 
 const AddItem = () => {
-  const onFinish = (values) => {
+  const onFinish = values => {
     console.log("Received values of form: ", values);
   };
 
-  const onChange = (value) => {
+  const onChange = value => {
     console.log("changed", value);
   };
+
   return (
     <Form
-      style={{paddingTop: 50}}
+      style={{ paddingTop: 50 }}
       name="validate_other"
       {...formItemLayout}
       onFinish={onFinish}
-      initialValues={{
-        ["input-number"]: 3,
-        ["checkbox-group"]: ["A", "B"],
-        rate: 3.5,
-      }}
     >
       {" "}
       <Form.Item
@@ -70,10 +67,10 @@ const AddItem = () => {
         rules={[{ required: true, message: "Please enter a price!" }]}
       >
         <InputNumber
-          formatter={(value) =>
+          formatter={value =>
             `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
-          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+          parser={value => value.replace(/\$\s?|(,*)/g, "")}
           onChange={onChange}
         />
       </Form.Item>
@@ -83,10 +80,8 @@ const AddItem = () => {
         rules={[{ required: true, message: "Please enter the stock!" }]}
       >
         <InputNumber
-          formatter={(value) =>
-            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }
-          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+          formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          parser={value => value.replace(/\$\s?|(,*)/g, "")}
           onChange={onChange}
         />
       </Form.Item>
@@ -123,7 +118,7 @@ const AddItem = () => {
       <Form.Item
         wrapperCol={{
           span: 12,
-          offset: 6,
+          offset: 6
         }}
       >
         <Button type="primary" htmlType="submit">

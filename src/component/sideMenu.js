@@ -7,14 +7,14 @@ import {
   UserOutlined,
   ShoppingOutlined,
   AccountBookOutlined,
-  BarsOutlined,
+  BarsOutlined
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 const Sider = () => {
   const theme = "dark";
   const [current, setCurrent] = useState("1");
-  const handleClick = (e) => {
+  const handleClick = e => {
     console.log("click ", e);
     setCurrent(e.key);
   };
@@ -24,7 +24,7 @@ const Sider = () => {
       <Menu
         theme={theme}
         onClick={handleClick}
-        style={{ minHeight: 900 }}
+        style={{ minHeight: 600 }}
         defaultOpenKeys={["sub1", "sub2", "sub4", "sub5", "sub6", "sub7"]}
         selectedKeys={[current]}
         mode="inline"

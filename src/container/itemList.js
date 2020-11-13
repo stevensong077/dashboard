@@ -8,21 +8,21 @@ const ItemList = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
 
   let searchInput = React.createRef();
-  const getColumnSearchProps = (dataIndex) => ({
+  const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
       confirm,
-      clearFilters,
+      clearFilters
     }) => (
       <div style={{ padding: 8 }}>
         <Input
-          ref={(node) => {
+          ref={node => {
             searchInput = node;
           }}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
+          onChange={e =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -48,7 +48,7 @@ const ItemList = () => {
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
+    filterIcon: filtered => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
@@ -58,12 +58,12 @@ const ItemList = () => {
             .toLowerCase()
             .includes(value.toLowerCase())
         : "",
-    onFilterDropdownVisibleChange: (visible) => {
+    onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => searchInput.select(), 100);
       }
     },
-    render: (text) =>
+    render: text =>
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -73,65 +73,65 @@ const ItemList = () => {
         />
       ) : (
         text
-      ),
+      )
   });
   const columns = [
     {
       title: "Item Image",
-      dataIndex: "image",
+      dataIndex: "image"
     },
     {
       title: "SKU",
       dataIndex: "sku",
-      ...getColumnSearchProps("sku"),
+      ...getColumnSearchProps("sku")
     },
     {
       title: "Item Name",
       dataIndex: "name",
-      ...getColumnSearchProps("name"),
+      ...getColumnSearchProps("name")
     },
     {
       title: "Price($)",
       dataIndex: "price",
       sorter: {
-        compare: (a, b) => a.price - b.price,
-      },
+        compare: (a, b) => a.price - b.price
+      }
     },
     {
       title: "Discount Price($)",
       dataIndex: "discount",
       sorter: {
-        compare: (a, b) => a.price - b.price,
-      },
+        compare: (a, b) => a.price - b.price
+      }
     },
     {
       title: "Stock",
       dataIndex: "stock",
       sorter: {
-        compare: (a, b) => a.stock - b.stock,
-      },
+        compare: (a, b) => a.stock - b.stock
+      }
     },
     {
       title: "Categories",
-      dataIndex: "categories",
+      dataIndex: "categories"
     },
     {
       title: "Status",
-      dataIndex: "status",
+      dataIndex: "status"
     },
     {
       title: "Comment",
-      dataIndex: "comment",
+      dataIndex: "comment"
     },
     {
       title: "Operation",
       dataIndex: "opeartion",
       render: () => (
         <Space size="middle">
-          <a>Edit</a>
+          <p>Edit</p>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   const data = [];
@@ -140,12 +140,12 @@ const ItemList = () => {
     let categoriesArr = [
       <Tag color="geekblue">KOREAN-TOFU</Tag>,
       <Tag color="geekblue">Chinese-TOFU</Tag>,
-      <Tag color="geekblue">Japanese-TOFU</Tag>,
+      <Tag color="geekblue">Japanese-TOFU</Tag>
     ];
     let indexCate = Math.floor(Math.random() * categoriesArr.length);
     let statusArr = [
       <Tag color="#87d068">active</Tag>,
-      <Tag color="#f50">archived</Tag>,
+      <Tag color="#f50">archived</Tag>
     ];
     let indexSta = Math.floor(Math.random() * statusArr.length);
     let comArr = ["", "in large demand", ""];
@@ -159,18 +159,18 @@ const ItemList = () => {
       stock: parseInt(Math.random() * 10000),
       categories: categoriesArr[indexCate],
       status: statusArr[indexSta],
-      comment: comArr[indexCom],
+      comment: comArr[indexCom]
     });
   }
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    // console.log(confirm()); 
+    // console.log(confirm());
     console.log(...selectedKeys);
     setSearchText(...selectedKeys);
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = (clearFilters) => {
+  const handleReset = clearFilters => {
     clearFilters();
     setSearchText("");
   };

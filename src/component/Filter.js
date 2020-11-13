@@ -3,7 +3,7 @@ import { Select, Typography } from "antd";
 const { Option } = Select;
 const { Text } = Typography;
 
-const Filter = (props) => {
+const Filter = props => {
   return (
     <Fragment>
       <Text style={{ margin: 10 }}>Show</Text>
