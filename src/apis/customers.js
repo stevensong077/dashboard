@@ -1,4 +1,4 @@
-function getCustomers() {
+const getCustomers = () => {
   return {
     data: [
       {
@@ -8,7 +8,7 @@ function getCustomers() {
         phone: "0447750140",
         address: "London, Park Lane no.1",
         signup: "17/06/2019",
-        status: "active",
+        status: "active"
       },
       {
         key: 2,
@@ -17,7 +17,7 @@ function getCustomers() {
         phone: "0491092826",
         address: "London, Park Lane no.1",
         signup: "17/06/2019",
-        status: "archived",
+        status: "archived"
       },
       {
         key: 3,
@@ -26,7 +26,7 @@ function getCustomers() {
         phone: "0421781332",
         address: "London, Park Lane no.1",
         signup: "17/06/2019",
-        status: "active",
+        status: "active"
       },
       {
         key: 4,
@@ -35,7 +35,7 @@ function getCustomers() {
         phone: "0441094612",
         address: "London, Park Lane no.1",
         signup: "17/06/2019",
-        status: "active",
+        status: "active"
       },
       {
         key: 5,
@@ -44,7 +44,7 @@ function getCustomers() {
         phone: "0441873434",
         address: "London, Park Lane no.1",
         signup: "17/06/2019",
-        status: "active",
+        status: "active"
       },
       {
         key: 6,
@@ -53,10 +53,10 @@ function getCustomers() {
         phone: "0441873434",
         address: "London, Park Lane no.1",
         signup: "23/06/2017",
-        status: "archived",
-      },
-    ],
+        status: "archived"
+      }
+    ]
   };
-}
+};
 
 export default getCustomers;

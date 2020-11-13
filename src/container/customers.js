@@ -6,21 +6,19 @@ import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
 
-const Customers = (props) => {
+const Customers = props => {
   const {
     originData,
     removeCustomer,
     saveChanges,
     filterCustomers,
-    searchCustomer,
+    searchCustomer
   } = props;
 
-  // const [input,setInput] = useState("")
-
-  const selectHandler = (value) => {
+  const selectHandler = value => {
     filterCustomers(value);
   };
-  const searchHandler = (e) => {
+  const searchHandler = e => {
     console.log(e.target.value);
     searchCustomer(e.target.value);
   };
@@ -32,13 +30,13 @@ const Customers = (props) => {
           <Form.Item
             name={dataIndex}
             style={{
-              margin: 0,
+              margin: 0
             }}
             rules={[
               {
                 required: true,
-                message: `Please Input ${title}!`,
-              },
+                message: `Please Input ${title}!`
+              }
             ]}
           >
             <Input />
@@ -50,13 +48,13 @@ const Customers = (props) => {
     );
   };
 
-  const EditableTable = (props) => {
+  const EditableTable = props => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState("");
-    const isEditing = (record) => record.key === editingKey;
-    const editHandler = (record) => {
+    const isEditing = record => record.key === editingKey;
+    const editHandler = record => {
       form.setFieldsValue({
-        ...record,
+        ...record
       });
       setEditingKey(record.key);
     };
@@ -65,11 +63,11 @@ const Customers = (props) => {
       setEditingKey("");
     };
 
-    const RemoveHandler = (key) => {
+    const RemoveHandler = key => {
       removeCustomer(key);
     };
 
-    const saveHander = async (key) => {
+    const saveHander = async key => {
       try {
         const row = await form.validateFields();
         saveChanges(key, row);
@@ -82,39 +80,39 @@ const Customers = (props) => {
       {
         title: "Name",
         dataIndex: "name",
-        editable: true,
+        editable: true
       },
       {
         title: "Email",
         dataIndex: "email",
-        editable: true,
+        editable: true
       },
       {
         title: "Phone",
         dataIndex: "phone",
-        editable: true,
+        editable: true
       },
       {
         title: "Address",
         dataIndex: "address",
-        editable: true,
+        editable: true
       },
       {
         title: "Signup Date",
         dataIndex: "signup",
-        editable: true,
+        editable: true
       },
       {
         title: "Status",
         dataIndex: "status",
         editable: true,
-        render: (data) => {
+        render: data => {
           if (data === "active") {
             return <Tag color="green">{data}</Tag>;
           } else {
             return <Tag color="red">{data}</Tag>;
           }
-        },
+        }
       },
       {
         title: "Operation",
@@ -128,7 +126,7 @@ const Customers = (props) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <a>Save</a>
+                <p>Save</p>
               </Popconfirm>
               <Popconfirm
                 title="Your changes won't be saved."
@@ -136,43 +134,43 @@ const Customers = (props) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <a>Cancel</a>
+                <p>Cancel</p>
               </Popconfirm>
             </Space>
           ) : (
             <Space size="middle">
-              <a
+              <p
                 disabled={editingKey !== ""}
                 onClick={() => editHandler(record)}
               >
                 Edit
-              </a>
+              </p>
               <Popconfirm
                 title="Sure to remove this customer?"
                 onConfirm={() => RemoveHandler(record.key)}
                 okText="Yes"
                 cancelText="No"
               >
-                <a disabled={editingKey !== ""}>Remove</a>
+                <p disabled={editingKey !== ""}>Remove</p>
               </Popconfirm>
             </Space>
           );
-        },
-      },
+        }
+      }
     ];
-    const mergedColumns = columns.map((col) => {
+    const mergedColumns = columns.map(col => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: (record) => ({
+        onCell: record => ({
           record,
           inputType: "text",
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: isEditing(record),
-        }),
+          editing: isEditing(record)
+        })
       };
     });
     return (
@@ -180,14 +178,14 @@ const Customers = (props) => {
         <Table
           components={{
             body: {
-              cell: EditableCell,
-            },
+              cell: EditableCell
+            }
           }}
           bordered
           dataSource={props.initialData}
           columns={mergedColumns}
           pagination={{
-            onChange: cancelHandler,
+            onChange: cancelHandler
           }}
         />
       </Form>
@@ -198,9 +196,9 @@ const Customers = (props) => {
     <Fragment>
       <Filter select={selectHandler} />
       <SearchBox search={searchHandler} />
-      <Button onClick={(e)=>console.log(e.target)}> Submit</ Button>
+      <Button onClick={e => console.log(e.target)}> Submit</Button>
       <Button
-      style={{float: "right" ,borderRight: 50}}
+        style={{ float: "right", borderRight: 50 }}
         type="primary"
         shape="round"
         icon={<ReloadOutlined />}
@@ -217,14 +215,14 @@ const {
   removeCustomer,
   saveChanges,
   filterCustomers,
-  searchCustomer,
+  searchCustomer
 } = actions;
 
 export default connect(
-  (state) => {
+  state => {
     const { data } = state.Customers;
     return {
-      originData: data  // .filter((item)=> item.status === active),
+      originData: data // .filter((item)=> item.status === active),
     };
   },
   { removeCustomer, saveChanges, filterCustomers, searchCustomer },
