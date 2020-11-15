@@ -1,11 +1,22 @@
 import React, { Fragment, useState } from "react";
 import Filter from "../component/Filter";
 import SearchBox from "../component/SearchBox";
-import { Table, Space, Tag, Input, Form, Popconfirm, Button } from "antd";
+import "./customer.css";
+import {
+  Table,
+  Space,
+  Tag,
+  Input,
+  Form,
+  Popconfirm,
+  Button,
+  Typography
+} from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import actions from "../redux/customers/actions";
 
+const { Text } = Typography;
 const Customers = props => {
   const {
     originData,
@@ -18,9 +29,9 @@ const Customers = props => {
   const selectHandler = value => {
     filterCustomers(value);
   };
-  const searchHandler = e => {
-    console.log(e.target.value);
-    searchCustomer(e.target.value);
+  const searchHandler = value => {
+    // console.log(value);
+    searchCustomer(value);
   };
 
   const EditableCell = ({ editing, dataIndex, title, children }) => {
@@ -196,7 +207,6 @@ const Customers = props => {
     <Fragment>
       <Filter select={selectHandler} />
       <SearchBox search={searchHandler} />
-      <Button onClick={e => console.log(e.target)}> Submit</Button>
       <Button
         style={{ float: "right", borderRight: 50 }}
         type="primary"
