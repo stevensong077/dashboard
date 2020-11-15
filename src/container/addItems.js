@@ -10,6 +10,8 @@ import {
   Tag
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { connect } from "react-redux";
+import actions from "../redux/items/actions";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -30,8 +32,10 @@ const normFile = e => {
   return e && e.fileList;
 };
 
-const AddItem = () => {
+const AddItem = props => {
+  const { submit } = props;
   const onFinish = values => {
+    submit(values);
     console.log("Received values of form: ", values);
   };
 
@@ -85,19 +89,23 @@ const AddItem = () => {
           onChange={onChange}
         />
       </Form.Item>
-      <Form.Item name="Category" label="category" hasFeedback>
+      <Form.Item name="categories" label="category" hasFeedback>
         <Select placeholder="Please select a country">
           <Option value="china">Chinese-TOFU</Option>
           <Option value="japan">Japanese-TOFU</Option>
           <Option value="korea">Korean-TOFU</Option>
         </Select>
       </Form.Item>
-      <Form.Item name="radio-group" label="Status" rules={[{ required: true }]}>
-        <Radio.Group defaultValue={"a"}>
-          <Radio value="a">
+      <Form.Item
+        name="status"
+        label="Status"
+        rules={[{ required: true, message: "Please select the status!" }]}
+      >
+        <Radio.Group >
+          <Radio value="active">
             <Tag color="#87d068">active</Tag>
           </Radio>
-          <Radio value="b">
+          <Radio value="archived">
             <Tag color="#f50">archived</Tag>
           </Radio>
         </Radio.Group>
@@ -129,4 +137,16 @@ const AddItem = () => {
   );
 };
 
-export default AddItem;
+const { submit } = actions;
+
+// export default AddItem;
+export default connect(
+  state => {
+    const { data } = state.Items;
+    return {
+      data // .filter((item)=> item.status === active),
+    };
+  },
+  { submit },
+  null
+)(AddItem);

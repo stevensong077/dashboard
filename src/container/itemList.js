@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Table, Tag, Space, Input, Button } from "antd";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
+import { connect } from "react-redux";
 
-const ItemList = () => {
+const ItemList = props => {
+  const { data } = props;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
@@ -92,80 +94,49 @@ const ItemList = () => {
     },
     {
       title: "Price($)",
-      dataIndex: "price",
-      sorter: {
-        compare: (a, b) => a.price - b.price
-      }
+      dataIndex: "price"
     },
     {
       title: "Discount Price($)",
-      dataIndex: "discount",
-      sorter: {
-        compare: (a, b) => a.price - b.price
-      }
+      dataIndex: "discount"
     },
     {
       title: "Stock",
-      dataIndex: "stock",
-      sorter: {
-        compare: (a, b) => a.stock - b.stock
-      }
+      dataIndex: "stock"
     },
     {
       title: "Categories",
-      dataIndex: "categories"
+      dataIndex: "categories",
+      render: data => <Tag color="geekblue">{data}</Tag>
     },
     {
       title: "Status",
-      dataIndex: "status"
+      dataIndex: "status",
+      render: data => {
+        if (data === "active") {
+          return <Tag color="green">{data}</Tag>;
+        } else {
+          return <Tag color="red">{data}</Tag>;
+        }
+      }
     },
     {
       title: "Comment",
-      dataIndex: "comment"
+      dataIndex: "comment",
     },
     {
       title: "Operation",
       dataIndex: "opeartion",
       render: () => (
         <Space size="middle">
-          <p>Edit</p>
+          <a>Edit</a>
         </Space>
       )
     }
   ];
 
-  const data = [];
-  for (let i = 0; i < 46; i++) {
-    const discount = (Math.random() * 10).toFixed(2);
-    let categoriesArr = [
-      <Tag color="geekblue">KOREAN-TOFU</Tag>,
-      <Tag color="geekblue">Chinese-TOFU</Tag>,
-      <Tag color="geekblue">Japanese-TOFU</Tag>
-    ];
-    let indexCate = Math.floor(Math.random() * categoriesArr.length);
-    let statusArr = [
-      <Tag color="#87d068">active</Tag>,
-      <Tag color="#f50">archived</Tag>
-    ];
-    let indexSta = Math.floor(Math.random() * statusArr.length);
-    let comArr = ["", "in large demand", ""];
-    let indexCom = Math.floor(Math.random() * comArr.length);
-    data.push({
-      key: i,
-      sku: Math.floor(100000000000 + Math.random() * 900000000000),
-      name: `Ourhome Soft Tofu340g ${i}`,
-      price: (discount * 1.5).toFixed(2),
-      discount: discount,
-      stock: parseInt(Math.random() * 10000),
-      categories: categoriesArr[indexCate],
-      status: statusArr[indexSta],
-      comment: comArr[indexCom]
-    });
-  }
-
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    // console.log(confirm());
-    console.log(...selectedKeys);
+    confirm();
     setSearchText(...selectedKeys);
     setSearchedColumn(dataIndex);
   };
@@ -178,4 +149,13 @@ const ItemList = () => {
   return <Table columns={columns} dataSource={data} />;
 };
 
-export default ItemList;
+export default connect(
+  state => {
+    const { data } = state.Items;
+    return {
+      data // .filter((item)=> item.status === active),
+    };
+  },
+  {},
+  null
+)(ItemList);
