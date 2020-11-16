@@ -1,30 +1,33 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Table, Tag, Space, Input, Button } from "antd";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
+import actions from "../redux/items/actions";
+import fbs from "../utils/firebase";
+const { firestore } = fbs;
 
-const ItemList = props => {
-  const { data } = props;
+const ItemList = (props) => {
+  const { data, showItems } = props;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
   let searchInput = React.createRef();
-  const getColumnSearchProps = dataIndex => ({
+  const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
       confirm,
-      clearFilters
+      clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
         <Input
-          ref={node => {
+          ref={(node) => {
             searchInput = node;
           }}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={e =>
+          onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -50,7 +53,7 @@ const ItemList = props => {
         </Space>
       </div>
     ),
-    filterIcon: filtered => (
+    filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
@@ -60,12 +63,12 @@ const ItemList = props => {
             .toLowerCase()
             .includes(value.toLowerCase())
         : "",
-    onFilterDropdownVisibleChange: visible => {
+    onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.select(), 100);
       }
     },
-    render: text =>
+    render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -75,50 +78,50 @@ const ItemList = props => {
         />
       ) : (
         text
-      )
+      ),
   });
   const columns = [
     {
       title: "Item Image",
-      dataIndex: "image"
+      dataIndex: "image",
     },
     {
       title: "SKU",
       dataIndex: "sku",
-      ...getColumnSearchProps("sku")
+      ...getColumnSearchProps("sku"),
     },
     {
       title: "Item Name",
       dataIndex: "name",
-      ...getColumnSearchProps("name")
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Price($)",
-      dataIndex: "price"
+      dataIndex: "price",
     },
     {
       title: "Discount Price($)",
-      dataIndex: "discount"
+      dataIndex: "discount",
     },
     {
       title: "Stock",
-      dataIndex: "stock"
+      dataIndex: "stock",
     },
     {
       title: "Categories",
       dataIndex: "categories",
-      render: data => <Tag color="geekblue">{data}</Tag>
+      render: (data) => <Tag color="geekblue">{data}</Tag>,
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: data => {
+      render: (data) => {
         if (data === "active") {
           return <Tag color="green">{data}</Tag>;
         } else {
           return <Tag color="red">{data}</Tag>;
         }
-      }
+      },
     },
     {
       title: "Comment",
@@ -129,10 +132,10 @@ const ItemList = props => {
       dataIndex: "opeartion",
       render: () => (
         <Space size="middle">
-          <a>Edit</a>
+          <a href>Edit</a>
         </Space>
-      )
-    }
+      ),
+    },
   ];
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -141,21 +144,40 @@ const ItemList = props => {
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = clearFilters => {
+  const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
   };
+  const showHandler = () => {
+    const db = firestore;
+    const a = db.collection("products");
 
-  return <Table columns={columns} dataSource={data} />;
+    db.collection("products").add({
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815,
+    });
+    const testdoc = db.collection("products").doc("test-product");
+    testdoc.get().then((doc) => console.log(doc));
+    console.log(testdoc);
+    console.log(a);
+    showItems();
+  };
+  return (
+    <Fragment>
+      <Button onClick={showHandler}>test</Button>
+      <Table columns={columns} dataSource={data} />
+    </Fragment>
+  );
 };
-
+const { showItems } = actions;
 export default connect(
-  state => {
+  (state) => {
     const { data } = state.Items;
     return {
-      data // .filter((item)=> item.status === active),
+      data, // .filter((item)=> item.status === active),
     };
   },
-  {},
+  { showItems },
   null
 )(ItemList);

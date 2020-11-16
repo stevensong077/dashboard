@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import actions from "./actions";
 import { deepCopy, find } from "../../utils/utils";
 import getCustomers from "../../apis/customers";
