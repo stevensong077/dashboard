@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import Filter from "../component/Filter";
 import SearchBox from "../component/SearchBox";
+import EditableCell from "../component/EditableCell";
 import "./customer.css";
 import {
   Table,
   Space,
   Tag,
-  Input,
   Form,
   Popconfirm,
   Button,
@@ -32,31 +32,6 @@ const Customers = (props) => {
   const searchHandler = (value) => {
     // console.log(value);
     searchCustomer(value);
-  };
-
-  const EditableCell = ({ editing, dataIndex, title, children }) => {
-    return (
-      <td>
-        {editing ? (
-          <Form.Item
-            name={dataIndex}
-            style={{
-              margin: 0,
-            }}
-            rules={[
-              {
-                required: true,
-                message: `Please Input ${title}!`,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        ) : (
-          children
-        )}
-      </td>
-    );
   };
 
   const EditableTable = (props) => {
@@ -150,7 +125,8 @@ const Customers = (props) => {
             </Space>
           ) : (
             <Space size="middle">
-              <a href
+              <a
+                href
                 disabled={editingKey !== ""}
                 onClick={() => editHandler(record)}
               >
@@ -162,7 +138,9 @@ const Customers = (props) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <a href disabled={editingKey !== ""}>Remove</a>
+                <a href disabled={editingKey !== ""}>
+                  Remove
+                </a>
               </Popconfirm>
             </Space>
           );
@@ -204,9 +182,13 @@ const Customers = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Filter select={selectHandler} />
-      <SearchBox search={searchHandler} />
+      <SearchBox
+        style={{ marginLeft: 80 }}
+        search={searchHandler}
+        text={"Search customer's name, email or phone"}
+      />
       <Button
         style={{ float: "right", borderRight: 50 }}
         type="primary"
@@ -217,7 +199,7 @@ const Customers = (props) => {
         Reload
       </Button>
       <EditableTable initialData={originData} />
-    </Fragment>
+    </>
   );
 };
 

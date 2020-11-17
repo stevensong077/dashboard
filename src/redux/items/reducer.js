@@ -68,7 +68,7 @@ const defaultState = {
       stock: 789,
       categories: "Roaster",
       status: "active",
-      comment: "in large demand",
+      comment: null,
     },
   ],
   items: {},

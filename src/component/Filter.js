@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Select, Typography } from "antd";
 const { Option } = Select;
 const { Text } = Typography;
 
 const Filter = props => {
   return (
-    <Fragment>
+    <>
       <Text style={{ margin: 10 }}>Show</Text>
       <Select
         style={{ width: "10%", marginBottom: 30 }}
@@ -16,7 +16,7 @@ const Filter = props => {
         <Option value="active">Active</Option>
         <Option value="archived">Archived</Option>
       </Select>
-    </Fragment>
+    </>
   );
 };
 
