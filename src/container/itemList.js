@@ -1,161 +1,285 @@
-import React, { useState } from "react";
-import { Table, Tag, Space, Input, Button } from "antd";
-import Highlighter from "react-highlight-words";
-import { SearchOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Table, Tag, Space, Input, Button, Spin, Form, Popconfirm } from "antd";
+import SearchBox from "../component/SearchBox";
+import Filter from "../component/Filter";
+import { find } from "../utils/utils";
+import { ReloadOutlined } from "@ant-design/icons";
+
 import { connect } from "react-redux";
+import fbs from "../utils/firebase";
+import EditableCell from "../component/EditableCell";
+const { firestore } = fbs;
+const db = firestore;
 
-const ItemList = props => {
-  const { data } = props;
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+const ItemList = (props) => {
+  // const { data } = props;
+  const [isFetchingData, setIsFetchingData] = useState(false);
+  const [dataset, setDataset] = useState([]);
+  useEffect(() => getData(), []);
 
-  let searchInput = React.createRef();
-  const getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => searchInput.select(), 100);
-      }
-    },
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      )
-  });
-  const columns = [
-    {
-      title: "Item Image",
-      dataIndex: "image"
-    },
-    {
-      title: "SKU",
-      dataIndex: "sku",
-      ...getColumnSearchProps("sku")
-    },
-    {
-      title: "Item Name",
-      dataIndex: "name",
-      ...getColumnSearchProps("name")
-    },
-    {
-      title: "Price($)",
-      dataIndex: "price"
-    },
-    {
-      title: "Discount Price($)",
-      dataIndex: "discount"
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock"
-    },
-    {
-      title: "Categories",
-      dataIndex: "categories",
-      render: data => <Tag color="geekblue">{data}</Tag>
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      render: data => {
-        if (data === "active") {
-          return <Tag color="green">{data}</Tag>;
-        } else {
-          return <Tag color="red">{data}</Tag>;
+  const searchHandler = (value) => {
+    const newSet = dataset.filter(
+      (item) => find(item.name, value) || find(item.sku, value)
+    );
+    setDataset(newSet);
+  };
+
+  const selectHandler = async(value) => {
+    const originData = await getData()
+    if (value === "active") {
+      const newSet = originData.filter((item)=>item.status==="active")
+      setDataset(newSet);
+    }else if (value === "archived") {
+      const newSet = originData.filter((item)=>item.status==="archived")
+      setDataset(newSet);
+    }
+  };
+  const EditableTable = (props) => {
+    const [form] = Form.useForm();
+    const [editingKey, setEditingKey] = useState("");
+    const isEditing = (record) => record.key === editingKey;
+    const editHandler = (record) => {
+      form.setFieldsValue({
+        ...record,
+      });
+      setEditingKey(record.key);
+    };
+
+    const cancelHandler = () => {
+      setEditingKey("");
+    };
+
+    const RemoveHandler = (key) => {
+      db.collection("products")
+        .doc(JSON.stringify(key))
+        .delete()
+        .then(() => {
+          return db.collection("products").get();
+        })
+        .then((products) => {
+          const newArr = [];
+          products.forEach((doc) => {
+            newArr.push(doc.data());
+          });
+          return newArr;
+        })
+        .then((newArr) => {
+          setDataset(newArr);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const saveHander = async (key) => {
+      const row = await form.validateFields();
+      row.key = key;
+      for (let i in row) {
+        if (row[i] === undefined) {
+          row[i] = "";
         }
       }
-    },
-    {
-      title: "Comment",
-      dataIndex: "comment",
-    },
-    {
-      title: "Operation",
-      dataIndex: "opeartion",
-      render: () => (
-        <Space size="middle">
-          <a>Edit</a>
-        </Space>
-      )
-    }
-  ];
+      db.collection("products")
+        .doc(JSON.stringify(key))
+        .set(row)
+        .then(() => {
+          return db.collection("products").get();
+        })
+        .then((products) => {
+          const newArr = [];
+          products.forEach((doc) => {
+            newArr.push(doc.data());
+          });
+          return newArr;
+        })
+        .then((newArr) => setDataset(newArr));
+      setEditingKey("");
+    };
+    const columns = [
+      // {
+      //   title: "Item Image",
+      //   dataIndex: "image",
+      //   editable: true,
+      // },
+      {
+        title: "SKU",
+        dataIndex: "sku",
+        editable: true,
+      },
+      {
+        title: "Item Name",
+        dataIndex: "name",
+        editable: true,
+      },
+      {
+        title: "Price($)",
+        dataIndex: "price",
+        editable: true,
+      },
+      {
+        title: "Discount Price($)",
+        dataIndex: "discount",
+        editable: true,
+      },
+      {
+        title: "Stock",
+        dataIndex: "stock",
+        editable: true,
+      },
+      {
+        title: "Categories",
+        dataIndex: "categories",
+        render: (data) => <Tag color="geekblue">{data}</Tag>,
+        editable: true,
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        editable: true,
+        render: (data) => {
+          if (data === "active") {
+            return <Tag color="green">{data}</Tag>;
+          } else {
+            return <Tag color="red">{data}</Tag>;
+          }
+        },
+      },
+      {
+        title: "Comment",
+        dataIndex: "comment",
+        editable: true,
+      },
+      {
+        title: "Operation",
+        render: (_, record) => {
+          const editable = isEditing(record);
+          return editable ? (
+            <Space size="middle">
+              <Popconfirm
+                title="Your changes will be saved."
+                onConfirm={() => saveHander(record.key)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <a href>Save</a>
+              </Popconfirm>
+              <Popconfirm
+                title="Your changes won't be saved."
+                onConfirm={cancelHandler}
+                okText="Yes"
+                cancelText="No"
+              >
+                <a href>Cancel</a>
+              </Popconfirm>
+            </Space>
+          ) : (
+            <Space size="middle">
+              <a
+                href
+                disabled={editingKey !== ""}
+                onClick={() => editHandler(record)}
+              >
+                Edit
+              </a>
+              <Popconfirm
+                title="Sure to remove this customer?"
+                onConfirm={() => RemoveHandler(record.key)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <a href disabled={editingKey !== ""}>
+                  Remove
+                </a>
+              </Popconfirm>
+            </Space>
+          );
+        },
+      },
+    ];
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(...selectedKeys);
-    setSearchedColumn(dataIndex);
+    const mergedColumns = columns.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: (record) => ({
+          record,
+          inputType: "text",
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: isEditing(record),
+        }),
+      };
+    });
+    return (
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={props.initialData}
+          columns={mergedColumns}
+          pagination={{
+            onChange: cancelHandler,
+          }}
+        />
+      </Form>
+    );
   };
 
-  const handleReset = clearFilters => {
-    clearFilters();
-    setSearchText("");
+  const getData = async () => {
+    const arr = [];
+    setIsFetchingData(true);
+    await db
+      .collection("products")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // console.log(doc.data());
+          arr.push(doc.data());
+        });
+      });
+    setIsFetchingData(false);
+    setDataset(arr);
+    return arr
   };
 
-  return <Table columns={columns} dataSource={data} />;
+  // const remove = () => {
+  //   db.collection("products").doc("4").delete();
+  // };
+
+  return (
+    <Spin spinning={isFetchingData}>
+      {/* <Button onClick={() => getData()}>Get Data</Button> */}
+      {/* <Button onClick={remove}>delete</Button> */}
+      <Filter select={selectHandler} />
+      <SearchBox search={searchHandler}text={"Search item's name or SKU"} />
+      <Button
+        type="primary"
+        icon={<ReloadOutlined />}
+        onClick={() => window.location.reload()}
+      >
+        ReSet
+      </Button>
+      {/* <Table columns={columns} dataSource={dataset} /> */}
+      <EditableTable initialData={dataset} />
+    </Spin>
+  );
 };
 
-export default connect(
-  state => {
-    const { data } = state.Items;
-    return {
-      data // .filter((item)=> item.status === active),
-    };
-  },
-  {},
-  null
-)(ItemList);
+export default ItemList;
+
+// export default connect(
+//   (state) => {
+//     const { data } = state.Items;
+//     return {
+//       data, // .filter((item)=> item.status === active),
+//     };
+//   },
+//   {},
+//   null
+// )(ItemList);

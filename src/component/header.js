@@ -1,9 +1,9 @@
+import React from 'react';
 import { PageHeader, Breadcrumb } from "antd";
-import { Fragment } from "react";
 
 const Header = () => {
   return (
-    <Fragment>
+    <>
       <Breadcrumb style={{ marginTop: 30 }}>
         <Breadcrumb.Item>Home</Breadcrumb.Item>
         <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
@@ -13,7 +13,7 @@ const Header = () => {
         style={{ marginBottom: 30 }}
         title="Title"
       ></PageHeader>
-    </Fragment>
+    </>
   );
 };
 

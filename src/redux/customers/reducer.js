@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import actions from "./actions";
 import { deepCopy, find } from "../../utils/utils";
 import getCustomers from "../../apis/customers";
@@ -11,7 +12,7 @@ const defaultState = {
       phone: "0447750140",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "active"
+      status: "active",
     },
     {
       key: 2,
@@ -20,7 +21,7 @@ const defaultState = {
       phone: "0491092826",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "archived"
+      status: "archived",
     },
     {
       key: 3,
@@ -29,7 +30,7 @@ const defaultState = {
       phone: "0421781332",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "active"
+      status: "active",
     },
     {
       key: 4,
@@ -38,7 +39,7 @@ const defaultState = {
       phone: "0441094612",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "active"
+      status: "active",
     },
     {
       key: 5,
@@ -47,7 +48,7 @@ const defaultState = {
       phone: "0441873434",
       address: "London, Park Lane no.1",
       signup: "17/06/2019",
-      status: "active"
+      status: "active",
     },
     {
       key: 6,
@@ -56,9 +57,9 @@ const defaultState = {
       phone: "0441873434",
       address: "London, Park Lane no.1",
       signup: "23/06/2017",
-      status: "archived"
-    }
-  ]
+      status: "archived",
+    },
+  ],
   // will use "inputValue" later
   // inputValue: ""
 };
@@ -67,13 +68,14 @@ export default (state = defaultState, action) => {
   switch (action.type) {
     case actions.REMOVE_CUSTOMER: {
       const newState = deepCopy(state); // JSON.parse(JSON.stringify(state))
-      const newData = newState.data.filter(item => item.key !== action.key);
+      const newData = newState.data.filter((item) => item.key !== action.key);
       newState.data = newData;
       return newState;
     }
     case actions.SAVE_CHANGES: {
       const newState = deepCopy(state);
-      const index = newState.data.findIndex(item => action.key === item.key);
+      console.log(action.row);
+      const index = newState.data.findIndex((item) => action.key === item.key);
       const arr = [...newState.data];
       if (index > -1) {
         const item = arr[index];
@@ -92,11 +94,11 @@ export default (state = defaultState, action) => {
       const newState = deepCopy(state);
       const originData = getCustomers().data;
       if (action.value === "active") {
-        const newData = originData.filter(item => item.status === "active");
+        const newData = originData.filter((item) => item.status === "active");
         newState.data = newData;
         return newState;
       } else if (action.value === "archived") {
-        const newData = originData.filter(item => item.status === "archived");
+        const newData = originData.filter((item) => item.status === "archived");
         newState.data = newData;
         return newState;
       } else {
@@ -108,7 +110,7 @@ export default (state = defaultState, action) => {
       const newState = deepCopy(state);
       const originData = getCustomers().data;
       const newData = originData.filter(
-        item =>
+        (item) =>
           find(item.name, action.value) ||
           find(item.email, action.value) ||
           find(item.phone, action.value)

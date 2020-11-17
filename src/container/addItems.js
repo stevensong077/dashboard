@@ -5,41 +5,66 @@ import {
   InputNumber,
   Radio,
   Button,
-  Upload,
+  // Upload,
   Input,
-  Tag
+  Tag,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+// import { UploadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import actions from "../redux/items/actions";
+import fbs from "../utils/firebase";
+const { firestore } = fbs;
+const db = firestore;
 
 const { TextArea } = Input;
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 14
-  }
+    span: 14,
+  },
 };
 
-const normFile = e => {
-  console.log("Upload event:", e);
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
+// const normFile = e => {
+//   console.log("Upload event:", e);
+//   if (Array.isArray(e)) {
+//     return e;
+//   }
+//   return e && e.fileList;
+// };
 
-const AddItem = props => {
+const AddItem = (props) => {
   const { submit } = props;
-  const onFinish = values => {
+  const onFinish = async (values) => {
     submit(values);
-    console.log("Received values of form: ", values);
+    let maxValue = 0;
+
+    await db
+      .collection("products")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // console.log(doc.data());
+          if (doc.data().key > maxValue) {
+            maxValue = doc.data().key;
+          }
+        });
+      });
+
+    values.key = maxValue + 1;
+    for (let i in values) {
+      if (values[i] === undefined) {
+        values[i] = "";
+      }
+    }
+    console.log(values.key);
+    // db.collection("products").add(values);
+    db.collection("products").doc(JSON.stringify(values.key)).set(values);
   };
 
-  const onChange = value => {
+  const onChange = (value) => {
     console.log("changed", value);
   };
 
@@ -71,10 +96,11 @@ const AddItem = props => {
         rules={[{ required: true, message: "Please enter a price!" }]}
       >
         <InputNumber
-          formatter={value =>
+          min={0}
+          formatter={(value) =>
             `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
-          parser={value => value.replace(/\$\s?|(,*)/g, "")}
+          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
           onChange={onChange}
         />
       </Form.Item>
@@ -84,8 +110,11 @@ const AddItem = props => {
         rules={[{ required: true, message: "Please enter the stock!" }]}
       >
         <InputNumber
-          formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          parser={value => value.replace(/\$\s?|(,*)/g, "")}
+          min={0}
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
+          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
           onChange={onChange}
         />
       </Form.Item>
@@ -101,7 +130,7 @@ const AddItem = props => {
         label="Status"
         rules={[{ required: true, message: "Please select the status!" }]}
       >
-        <Radio.Group >
+        <Radio.Group>
           <Radio value="active">
             <Tag color="#87d068">active</Tag>
           </Radio>
@@ -110,7 +139,7 @@ const AddItem = props => {
           </Radio>
         </Radio.Group>
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         name="upload"
         label="Upload Image"
         valuePropName="fileList"
@@ -119,14 +148,14 @@ const AddItem = props => {
         <Upload name="logo" action="/upload.do" listType="picture">
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item label="Comment" name="comment">
         <TextArea showCount maxLength={100} />
       </Form.Item>
       <Form.Item
         wrapperCol={{
           span: 12,
-          offset: 6
+          offset: 6,
         }}
       >
         <Button type="primary" htmlType="submit">
@@ -141,10 +170,10 @@ const { submit } = actions;
 
 // export default AddItem;
 export default connect(
-  state => {
+  (state) => {
     const { data } = state.Items;
     return {
-      data // .filter((item)=> item.status === active),
+      data, // .filter((item)=> item.status === active),
     };
   },
   { submit },

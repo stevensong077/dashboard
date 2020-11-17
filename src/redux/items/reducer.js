@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import actions from "./actions";
 import { deepCopy } from "../../utils/utils";
 
@@ -12,7 +13,7 @@ const defaultState = {
       stock: 124,
       categories: "Ginger",
       status: "active",
-      comment: ""
+      comment: "",
     },
     {
       key: 2,
@@ -23,7 +24,7 @@ const defaultState = {
       stock: 43,
       categories: "Chinese-Tofu",
       status: "archived",
-      comment: "in large demand"
+      comment: "in large demand",
     },
     {
       key: 3,
@@ -34,7 +35,7 @@ const defaultState = {
       stock: 19,
       categories: "kroean-Tofu",
       status: "active",
-      comment: ""
+      comment: "",
     },
     {
       key: 4,
@@ -45,7 +46,7 @@ const defaultState = {
       stock: 0,
       categories: "Mango Tea",
       status: "active",
-      comment: ""
+      comment: "",
     },
     {
       key: 5,
@@ -56,7 +57,7 @@ const defaultState = {
       stock: 89,
       categories: "Ginger",
       status: "archived",
-      comment: ""
+      comment: "",
     },
     {
       key: 6,
@@ -67,18 +68,30 @@ const defaultState = {
       stock: 789,
       categories: "Roaster",
       status: "active",
-      comment: "in large demand"
-    }
-  ]
+      comment: null,
+    },
+  ],
+  items: {},
+  isFetchingItems: false,
 };
 
-export default (state = defaultState, action) => {
-  switch (action.type) {
+export default (state = defaultState, { type, ...action }) => {
+  switch (type) {
     case actions.SUBMIT: {
       const newState = deepCopy(state);
       newState.data.push(action.values);
-      return newState
+      return newState;
     }
+    case actions.SHOW_ITEMS: {
+      return { ...state, isFetchingItems: true };
+    }
+    case actions.SHOW_ITEMS_SUCCESS: {
+      return { ...state, isFetchingItems: false, items: actions.items };
+    }
+    case actions.SHOW_ITEMS_FAIL: {
+      return { ...state, isFetchingItems: false };
+    }
+
     default:
       return state;
   }
