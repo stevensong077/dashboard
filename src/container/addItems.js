@@ -5,11 +5,10 @@ import {
   InputNumber,
   Radio,
   Button,
-  // Upload,
   Input,
   Tag,
 } from "antd";
-// import { UploadOutlined } from "@ant-design/icons";
+import UploadBox from "../component/UploadBox";
 import { connect } from "react-redux";
 import actions from "../redux/items/actions";
 import fbs from "../utils/firebase";
@@ -27,20 +26,11 @@ const formItemLayout = {
   },
 };
 
-// const normFile = e => {
-//   console.log("Upload event:", e);
-//   if (Array.isArray(e)) {
-//     return e;
-//   }
-//   return e && e.fileList;
-// };
-
 const AddItem = (props) => {
   const { submit } = props;
   const onFinish = async (values) => {
     submit(values);
     let maxValue = 0;
-
     await db
       .collection("products")
       .get()
@@ -139,16 +129,12 @@ const AddItem = (props) => {
           </Radio>
         </Radio.Group>
       </Form.Item>
-      {/* <Form.Item
-        name="upload"
+      <Form.Item
+        // name="upload"
         label="Upload Image"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
       >
-        <Upload name="logo" action="/upload.do" listType="picture">
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
-        </Upload>
-      </Form.Item> */}
+        <UploadBox />
+      </Form.Item>
       <Form.Item label="Comment" name="comment">
         <TextArea showCount maxLength={100} />
       </Form.Item>

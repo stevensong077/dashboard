@@ -96,11 +96,11 @@ const ItemList = (props) => {
       setEditingKey("");
     };
     const columns = [
-      // {
-      //   title: "Item Image",
-      //   dataIndex: "image",
-      //   editable: true,
-      // },
+      {
+        title: "Item Image",
+        dataIndex: "image",
+        editable: true,
+      },
       {
         title: "SKU",
         dataIndex: "sku",
@@ -239,7 +239,6 @@ const ItemList = (props) => {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          // console.log(doc.data());
           arr.push(doc.data());
         });
       });
@@ -248,24 +247,18 @@ const ItemList = (props) => {
     return arr
   };
 
-  // const remove = () => {
-  //   db.collection("products").doc("4").delete();
-  // };
-
   return (
     <Spin spinning={isFetchingData}>
-      {/* <Button onClick={() => getData()}>Get Data</Button> */}
-      {/* <Button onClick={remove}>delete</Button> */}
       <Filter select={selectHandler} />
       <SearchBox search={searchHandler}text={"Search item's name or SKU"} />
       <Button
+        style={{ float: "right", borderRight: 50 }}
         type="primary"
         icon={<ReloadOutlined />}
         onClick={() => window.location.reload()}
       >
-        ReSet
+        Reload
       </Button>
-      {/* <Table columns={columns} dataSource={dataset} /> */}
       <EditableTable initialData={dataset} />
     </Spin>
   );
