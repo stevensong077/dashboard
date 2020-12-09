@@ -24,8 +24,8 @@ const Sider = () => {
       <Menu
         theme={theme}
         onClick={handleClick}
-        style={{ minHeight: 600 }}
-        defaultOpenKeys={["sub1", "sub2", "sub4", "sub5", "sub6", "sub7"]}
+        style={{ height: "100vh" }}
+        defaultOpenKeys={["sub1", "sub4", "sub5", "sub6", "sub7"]}
         selectedKeys={[current]}
         mode="inline"
       >

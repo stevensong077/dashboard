@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Input, Button, Spin, Form, Popconfirm } from "antd";
+import {
+  Table,
+  Tag,
+  Space,
+  Input,
+  Button,
+  Spin,
+  Form,
+  Popconfirm,
+} from "antd";
 import SearchBox from "../component/SearchBox";
 import Filter from "../component/Filter";
 import { find } from "../utils/utils";
@@ -8,14 +17,16 @@ import { ReloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import fbs from "../utils/firebase";
 import EditableCell from "../component/EditableCell";
+import itemActions from '../redux/items/actions';
 const { firestore } = fbs;
 const db = firestore;
 
 const ItemList = (props) => {
-  // const { data } = props;
+
+  const { items, getItem } = props;
   const [isFetchingData, setIsFetchingData] = useState(false);
   const [dataset, setDataset] = useState([]);
-  useEffect(() => getData(), []);
+  useEffect(() => getItem(), []);
 
   const searchHandler = (value) => {
     const newSet = dataset.filter(
@@ -24,13 +35,13 @@ const ItemList = (props) => {
     setDataset(newSet);
   };
 
-  const selectHandler = async(value) => {
-    const originData = await getData()
+  const selectHandler = async (value) => {
+    const originData = await getItem();
     if (value === "active") {
-      const newSet = originData.filter((item)=>item.status==="active")
+      const newSet = originData.filter((item) => item.status === "active");
       setDataset(newSet);
-    }else if (value === "archived") {
-      const newSet = originData.filter((item)=>item.status==="archived")
+    } else if (value === "archived") {
+      const newSet = originData.filter((item) => item.status === "archived");
       setDataset(newSet);
     }
   };
@@ -231,26 +242,27 @@ const ItemList = (props) => {
     );
   };
 
-  const getData = async () => {
-    const arr = [];
-    setIsFetchingData(true);
-    await db
-      .collection("products")
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          arr.push(doc.data());
-        });
-      });
-    setIsFetchingData(false);
-    setDataset(arr);
-    return arr
-  };
+  // const getData = async () => {
+  //   const arr = [];
+  //   setIsFetchingData(true);
+  //   await db
+  //     .collection("products")
+  //     .get()
+  //     .then(function (querySnapshot) {
+  //       querySnapshot.forEach(function (doc) {
+  //         arr.push(doc.data());
+  //       });
+  //     });
+  //   setIsFetchingData(false);
+  //   setDataset(arr);
+  //   return arr
+  // };
 
   return (
     <Spin spinning={isFetchingData}>
       <Filter select={selectHandler} />
-      <SearchBox search={searchHandler}text={"Search item's name or SKU"} />
+      <SearchBox search={searchHandler} text={"Search item's name or SKU"} />
+      <Input style={{ width: "32%" }} />
       <Button
         style={{ float: "right", borderRight: 50 }}
         type="primary"
@@ -259,20 +271,21 @@ const ItemList = (props) => {
       >
         Reload
       </Button>
-      <EditableTable initialData={dataset} />
+      <EditableTable initialData={items.records} />
     </Spin>
   );
 };
 
-export default ItemList;
+// export default ItemList;
+const {getItem} = itemActions
 
-// export default connect(
-//   (state) => {
-//     const { data } = state.Items;
-//     return {
-//       data, // .filter((item)=> item.status === active),
-//     };
-//   },
-//   {},
-//   null
-// )(ItemList);
+export default connect(
+  (state) => {
+    const { items, isFetchingData } = state.Items;
+    return {
+      items, // .filter((item)=> item.status === active),
+      isFetchingData
+    };
+  },
+  {getItem},
+)(ItemList);
